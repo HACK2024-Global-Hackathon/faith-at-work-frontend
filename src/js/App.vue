@@ -56,8 +56,8 @@ export default {
       this.events = []
       this.locationError = false
       const searchEventsUrl = new URL('http://localhost:8000/events')
-      searchEventsUrl.searchParams.append('lat', lat)
-      searchEventsUrl.searchParams.append('long', long)
+      searchEventsUrl.searchParams.append('latitude', lat)
+      searchEventsUrl.searchParams.append('longitude', long)
       fetch(searchEventsUrl)
         .then(response => response.json())
         .then(data => {
@@ -96,13 +96,13 @@ export default {
       <h4 v-if="locationName">Events near {{ locationName }}</h4>
       <h4 v-else>Start by entering your office location</h4>
       <div class="row">
-        <div class="col-md-6 col-lg-4 py-2" v-for="event in events" :key="event.id">
+        <div class="col-md-6 col-lg-4 py-2" v-for="event in events" :key="event.uuid">
           <div class="card">
-            <img :src="event.logo.url" class="card-img-top">
+            <img :src="event.image_url" class="card-img-top">
             <div class="card-body">
-              <h5 class="card-title">{{ event.name.text }}</h5>
-              <p class="card-text">{{ event.description.text }}</p>
-              <a :href="event.url" class="btn btn-primary">Sign up</a>
+              <h5 class="card-title">{{ event.title }}</h5>
+              <p class="card-text">{{ event.summary }}</p>
+              <a :href="event.eventbrite_url" class="btn btn-primary">Sign up</a>
             </div>
           </div>
         </div>
