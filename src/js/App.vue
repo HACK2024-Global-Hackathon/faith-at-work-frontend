@@ -1,4 +1,8 @@
 <script setup>
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
+
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
 </script>
 
 <script>
@@ -9,6 +13,12 @@ export default {
       locationName: '',
       locationError: false,
       events: []
+    }
+  },
+  mounted() {
+    const storedLocation = JSON.parse(window.localStorage.getItem('location') || 'null')
+    if (storedLocation) {
+      this.processSelectedLocation(storedLocation)
     }
   },
   methods: {
@@ -22,10 +32,9 @@ export default {
       return new Promise((resolve) => {
         const onemapSearchUrl = new URL('https://www.onemap.gov.sg/api/common/elastic/search?returnGeom=Y&getAddrDetails=Y&pageNum=1')
         onemapSearchUrl.searchParams.append('searchVal', searchTerm)
-        fetch(onemapSearchUrl)
-          .then(response => response.json())
-          .then(data => {
-            resolve([USE_CURRENT_LOCATION].concat(data.results))
+        axios.get(onemapSearchUrl)
+          .then(response => {
+            resolve([USE_CURRENT_LOCATION].concat(response.data.results))
           })
       })
     },
@@ -37,31 +46,35 @@ export default {
     },
     handleSubmit(result) {
       document.getElementsByClassName('autocomplete-input')[0].blur()
-      if (result === USE_CURRENT_LOCATION) {
+      window.localStorage.setItem('location', JSON.stringify(result))
+      this.processSelectedLocation(result)
+    },
+    handleFocus(event) {
+      event.target.select()
+    },
+    processSelectedLocation(location) {
+      if (location === USE_CURRENT_LOCATION) {
+        this.locationName = 'current location'
         navigator.geolocation.getCurrentPosition((position) => {
-          this.searchEvents(position.coords.latitude, position.coords.longitude, 'current location')
+          this.searchEvents(position.coords.latitude, position.coords.longitude)
         }, (error) => {
           this.locationError = true
           console.error(error)
         })
       } else {
-        this.searchEvents(result.LATITUDE, result.LONGITUDE, this.getResultValue(result))
+        this.locationName = this.getResultValue(location)
+        this.searchEvents(location.LATITUDE, location.LONGITUDE)
       }
     },
-    handleFocus(event) {
-      event.target.select()
-    },
-    searchEvents(lat, long, locationName) {
-      this.locationName = locationName
+    searchEvents(lat, long) {
       this.events = []
       this.locationError = false
       const searchEventsUrl = new URL('http://localhost:8000/events')
       searchEventsUrl.searchParams.append('latitude', lat)
       searchEventsUrl.searchParams.append('longitude', long)
-      fetch(searchEventsUrl)
-        .then(response => response.json())
-        .then(data => {
-          this.events = data
+      axios.get(searchEventsUrl)
+        .then(response => {
+          this.events = response.data
         })
     }
   }
