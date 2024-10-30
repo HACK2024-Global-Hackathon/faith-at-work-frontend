@@ -115,7 +115,14 @@ export default {
       searchEventsUrl.searchParams.append('interest_category', this.profile.interests)
       axios.get(searchEventsUrl)
         .then(response => {
-          this.events = response.data
+          this.events = [{
+            "uuid": "ylnvhAioqezN7xWOMREV",
+            "title": "#HACK2024 Singapore: Tech solutions for His Kingdom",
+            "summary": "#HACK is the largest global Christian hackathon for anyone who is passionate about leveraging technology to address missional projects.",
+            "eventbrite_url": "https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427",
+            "date": "2024-10-25T12:00:00Z",
+            "image_url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F796565779%2F297979351972%2F1%2Foriginal.20240626-094251?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C341%2C2732%2C1366&s=ee918b23e458b906b41579a70a82c9ee"
+          }].concat(response.data)
         })
     },
     clearData() {
