@@ -21,7 +21,7 @@ export default {
         gender: window.localStorage.getItem('profile.gender') || 'female',
         church: window.localStorage.getItem('profile.church') || ''
       },
-      showExtendedQuestions: window.location.search.includes('extended=true'),
+      showExtendedQuestions: window.location.href.includes('extended'),
       isFreshProfile: window.localStorage.getItem('persisted') !== 'true'
     }
   },
