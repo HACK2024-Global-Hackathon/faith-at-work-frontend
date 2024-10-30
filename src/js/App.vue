@@ -48,10 +48,10 @@ export default {
       this.processSelectedLocation(storedLocation)
     }
     if (this.isFreshProfile) {
-      window.localStorage.setItem('persisted', 'true')
       const profileModal = document.getElementById('profileModal')
       profileModal.addEventListener('hidden.bs.modal', () => {
         this.isFreshProfile = false
+        window.localStorage.setItem('persisted', 'true')
       })
       new Modal(profileModal).show()
     }
@@ -148,7 +148,7 @@ export default {
       </header>
     </div>
   </nav>
-  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal fade" id="profileModal" :data-bs-backdrop="isFreshProfile ? 'static' : undefined" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
