@@ -48,12 +48,16 @@ export default {
       this.processSelectedLocation(storedLocation)
     }
     if (this.isFreshProfile) {
-      const profileModal = document.getElementById('profileModal')
-      profileModal.addEventListener('hidden.bs.modal', () => {
-        this.isFreshProfile = false
-        window.localStorage.setItem('persisted', 'true')
+      const profileModalElement = document.getElementById('profileModal')
+      const profileModal = new Modal(profileModalElement)
+      profileModalElement.addEventListener('hidden.bs.modal', () => {
+        if (this.isFreshProfile) {
+          window.localStorage.setItem('persisted', 'true')
+          this.isFreshProfile = false
+          profileModal.dispose()
+        }
       })
-      new Modal(profileModal).show()
+      profileModal.show()
     }
   },
   methods: {
