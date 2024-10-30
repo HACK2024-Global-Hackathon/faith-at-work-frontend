@@ -227,7 +227,7 @@ export default {
       <p>Please allow location permissions, or search by address instead</p>
     </div>
     <div v-else>
-      <h4 v-if="locationName">Events near {{ locationName }}</h4>
+      <h4 v-if="locationName">Activities near {{ locationName }}</h4>
       <h4 v-else>Start by entering your office location</h4>
       <div class="row">
         <div class="col-md-6 col-lg-4 py-2" v-for="event in events" :key="event.uuid">
