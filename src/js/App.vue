@@ -148,7 +148,7 @@ export default {
       </header>
     </div>
   </nav>
-  <div class="modal fade" id="profileModal" :data-bs-backdrop="isFreshProfile ? 'static' : undefined" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal fade" id="profileModal" :data-bs-backdrop="isFreshProfile ? 'static' : true" :data-bs-keyboard="isFreshProfile ? 'false' : 'true'" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
