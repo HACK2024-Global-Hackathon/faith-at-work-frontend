@@ -109,9 +109,10 @@ export default {
     searchEvents(lat, long) {
       this.events = []
       this.locationError = false
-      const searchEventsUrl = new URL('http://localhost:8000/events')
+      const searchEventsUrl = new URL('https://faith-at-work-backend-392395172966.asia-east1.run.app/events')
       searchEventsUrl.searchParams.append('latitude', lat)
       searchEventsUrl.searchParams.append('longitude', long)
+      searchEventsUrl.searchParams.append('interest_category', this.profile.interests)
       axios.get(searchEventsUrl)
         .then(response => {
           this.events = response.data
