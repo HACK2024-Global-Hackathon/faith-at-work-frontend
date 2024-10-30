@@ -55,6 +55,7 @@ export default {
           window.localStorage.setItem('persisted', 'true')
           this.isFreshProfile = false
           profileModal.dispose()
+          document.getElementsByClassName('autocomplete-input')[0].focus()
         }
       })
       profileModal.show()
