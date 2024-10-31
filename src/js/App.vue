@@ -156,7 +156,11 @@ export default {
           <div class="form-floating mb-3">
             <select class="form-select" id="interests" v-model="profile.interests" aria-label="Select interests">
               <option value="fellowship">Fellowship</option>
-              <option value="discipleship">Discipleship</option>
+              <option value="biblestudy">Bible study</option>
+              <option value="prayer&worship">Prayer & worship</option>
+              <option value="sports&wellness">Sports & wellness</option>
+              <option value="volunteering">Volunteering</option>
+              <option value="workshops">Workshops</option>
             </select>
             <label for="interests">Interests</label>
           </div>
