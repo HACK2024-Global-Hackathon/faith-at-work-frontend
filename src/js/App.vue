@@ -177,7 +177,7 @@ export default {
     </div>
   </nav>
   <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="filterModalLabel">Filters</h1>
@@ -207,6 +207,7 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="searchEvents">Search</button>
         </div>
       </div>
@@ -273,7 +274,7 @@ export default {
           This will delete your preferences.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-bs-target="#profileModal" data-bs-toggle="modal">Cancel</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="clearData">Delete preferences</button>
         </div>
       </div>
