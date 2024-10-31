@@ -14,8 +14,10 @@ export default {
       locationName: '',
       locationError: false,
       events: [],
+      filters: {
+        interests: window.localStorage.getItem('filters.interests') || 'fellowship',
+      },
       profile: {
-        interests: window.localStorage.getItem('profile.interests') || 'fellowship',
         lifeStage: window.localStorage.getItem('profile.lifeStage') || 'single',
         ageGroup: window.localStorage.getItem('profile.ageGroup') || 'under30',
         gender: window.localStorage.getItem('profile.gender') || 'female',
@@ -24,8 +26,8 @@ export default {
     }
   },
   watch: {
-    'profile.interests': function() {
-      window.localStorage.setItem('profile.interests', this.profile.interests)
+    'filters.interests': function() {
+      window.localStorage.setItem('filters.interests', this.filters.interests)
     },
     'profile.lifeStage': function() {
       window.localStorage.setItem('profile.lifeStage', this.profile.lifeStage)
@@ -123,19 +125,26 @@ export default {
     <div class="container py-2 px-3 mx-auto">
       <header class="d-sm-flex flex-wrap justify-content-start align-items-md-center">
         <h1 class="h4 my-auto py-2 pe-3">Faith@Work</h1>
-        <div class="flex-grow-1 pe-3">
+        <div class="flex-grow-1">
           <div class="d-flex">
-            <autocomplete
-              class="flex-grow-1"
-              placeholder="Office location (postal code, nearest MRT, building name, etc.)"
-              :search="searchLocations"
-              :get-result-value="getResultValue"
-              @submit="handleSubmit"
-              @focus="handleFocus"
-              :debounce-time="500"
-            >
-            </autocomplete>
-            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#profileModal">
+            <div class="d-flex flex-nowrap input-group pe-3">
+              <autocomplete
+                class="flex-grow-1"
+                placeholder="Office location (postal code, nearest MRT, building name, etc.)"
+                :search="searchLocations"
+                :get-result-value="getResultValue"
+                @submit="handleSubmit"
+                @focus="handleFocus"
+                :debounce-time="500"
+              >
+              </autocomplete>
+              <button type="button" class="btn border px-3" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                  <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                </svg>
+              </button>
+            </div>
+            <button type="button" class="btn border" data-bs-toggle="modal" data-bs-target="#profileModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
@@ -146,15 +155,15 @@ export default {
       </header>
     </div>
   </nav>
-  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="profileModalLabel">Update profile</h1>
+          <h1 class="modal-title fs-5" id="filterModalLabel">Filters</h1>
         </div>
         <div class="modal-body">
           <div class="form-floating mb-3">
-            <select class="form-select" id="interests" v-model="profile.interests" aria-label="Select interests">
+            <select class="form-select" id="interests" v-model="filters.interests" aria-label="Select interests">
               <option value="fellowship">Fellowship</option>
               <option value="biblestudy">Bible study</option>
               <option value="prayer&worship">Prayer & worship</option>
@@ -164,6 +173,20 @@ export default {
             </select>
             <label for="interests">Interests</label>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="profileModalLabel">Update profile</h1>
+        </div>
+        <div class="modal-body">
           <div class="form-floating mb-3">
             <select class="form-select" id="life-stage" v-model="profile.lifeStage" aria-label="Select life stage">
               <option value="single">Single</option>
