@@ -21,10 +21,11 @@ export default {
         interests: window.localStorage.getItem('filters.interests') || 'fellowship',
       },
       profile: {
-        lifeStage: window.localStorage.getItem('profile.lifeStage') || 'single',
-        ageGroup: window.localStorage.getItem('profile.ageGroup') || 'under30',
-        gender: window.localStorage.getItem('profile.gender') || 'female',
-        church: window.localStorage.getItem('profile.church') || ''
+        lifeStage: window.localStorage.getItem('profile.lifeStage') || '',
+        ageGroup: window.localStorage.getItem('profile.ageGroup') || '',
+        gender: window.localStorage.getItem('profile.gender') || '',
+        church: window.localStorage.getItem('profile.church') || '',
+        industry: window.localStorage.getItem('profile.industry') || ''
       }
     }
   },
@@ -43,6 +44,9 @@ export default {
     },
     'profile.church': function() {
       window.localStorage.setItem('profile.church', this.profile.church)
+    },
+    'profile.industry': function() {
+      window.localStorage.setItem('profile.industry', this.profile.industry)
     }
   },
   mounted() {
@@ -202,6 +206,7 @@ export default {
         <div class="modal-body">
           <div class="form-floating mb-3">
             <select class="form-select" id="life-stage" v-model="profile.lifeStage" aria-label="Select life stage">
+              <option selected></option>
               <option value="single">Single</option>
               <option value="singleWithKids">Single with kids</option>
               <option value="married">Married</option>
@@ -211,6 +216,7 @@ export default {
           </div>
           <div class="form-floating mb-3">
             <select class="form-select" id="ageGroup" v-model="profile.ageGroup" aria-label="Select age group">
+              <option selected></option>
               <option value="under30">Under 30</option>
               <option value="30-39">30 to 39</option>
               <option value="40-49">40 to 49</option>
@@ -220,14 +226,19 @@ export default {
           </div>
           <div class="form-floating mb-3">
             <select class="form-select" id="gender" v-model="profile.gender" aria-label="Select gender">
+              <option selected></option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
             <label for="gender">Gender</label>
           </div>
-          <div class="form-floating">
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" id="church" v-model="profile.church" placeholder="Church">
             <label for="church">Church</label>
+          </div>
+          <div class="form-floating">
+            <input type="text" class="form-control" id="church" v-model="profile.industry" placeholder="Industry">
+            <label for="industry">Industry</label>
           </div>
         </div>
         <div class="modal-footer">
