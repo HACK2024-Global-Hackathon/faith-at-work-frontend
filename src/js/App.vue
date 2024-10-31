@@ -18,7 +18,8 @@ export default {
       isLoading: false,
       events: [],
       filters: {
-        interests: window.localStorage.getItem('filters.interests') || 'fellowship',
+        categories: window.localStorage.getItem('filters.categories') || 'fellowship',
+        daterange: 'anytime'
       },
       profile: {
         lifeStage: window.localStorage.getItem('profile.lifeStage') || '',
@@ -30,8 +31,8 @@ export default {
     }
   },
   watch: {
-    'filters.interests': function() {
-      window.localStorage.setItem('filters.interests', this.filters.interests)
+    'filters.categories': function() {
+      window.localStorage.setItem('filters.categories', this.filters.categories)
     },
     'profile.lifeStage': function() {
       window.localStorage.setItem('profile.lifeStage', this.profile.lifeStage)
@@ -112,7 +113,7 @@ export default {
       const searchEventsUrl = new URL('https://faith-at-work-backend-392395172966.asia-east1.run.app/events')
       searchEventsUrl.searchParams.append('latitude', this.locationLat)
       searchEventsUrl.searchParams.append('longitude', this.locationLong)
-      searchEventsUrl.searchParams.append('interest_category', this.filters.interests)
+      searchEventsUrl.searchParams.append('interest_category', this.filters.categories)
       this.isLoading = true
       axios.get(searchEventsUrl)
         .then(response => {
@@ -180,7 +181,7 @@ export default {
         </div>
         <div class="modal-body">
           <div class="form-floating mb-3">
-            <select class="form-select" id="interests" v-model="filters.interests" aria-label="Select interests">
+            <select class="form-select" id="categories" v-model="filters.categories" aria-label="Select categories">
               <option value="fellowship">Fellowship</option>
               <option value="biblestudy">Bible study</option>
               <option value="prayer&worship">Prayer & worship</option>
@@ -188,7 +189,18 @@ export default {
               <option value="volunteering">Volunteering</option>
               <option value="workshops">Workshops</option>
             </select>
-            <label for="interests">Interests</label>
+            <label for="categories">Categories</label>
+          </div>
+          <div class="form-floating">
+            <select class="form-select" id="daterange" v-model="filters.daterange" aria-label="Select when">
+              <option value="anytime">Anytime</option>
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="thisWeek">This week</option>
+              <option value="nextWeek">Next week</option>
+              <option value="thisMonth">This month</option>
+            </select>
+            <label for="daterange">When</label>
           </div>
         </div>
         <div class="modal-footer">
