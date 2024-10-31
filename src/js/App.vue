@@ -108,6 +108,9 @@ export default {
       }
     },
     searchEvents() {
+      if (!this.locationLat || !this.locationLong) {
+        return
+      }
       this.events = []
       this.locationError = false
       const searchEventsUrl = new URL('https://faith-at-work-backend-392395172966.asia-east1.run.app/events')
