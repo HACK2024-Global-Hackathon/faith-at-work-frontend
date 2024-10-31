@@ -21,8 +21,7 @@ export default {
         gender: window.localStorage.getItem('profile.gender') || 'female',
         church: window.localStorage.getItem('profile.church') || ''
       },
-      showExtendedQuestions: window.location.href.includes('extended'),
-      isFreshProfile: window.localStorage.getItem('persisted') !== 'true'
+      showExtendedQuestions: window.location.href.includes('extended')
     }
   },
   watch: {
@@ -46,19 +45,6 @@ export default {
     const storedLocation = JSON.parse(window.localStorage.getItem('location') || 'null')
     if (storedLocation) {
       this.processSelectedLocation(storedLocation)
-    }
-    if (this.isFreshProfile) {
-      const profileModalElement = document.getElementById('profileModal')
-      const profileModal = new Modal(profileModalElement)
-      profileModalElement.addEventListener('hidden.bs.modal', () => {
-        if (this.isFreshProfile) {
-          window.localStorage.setItem('persisted', 'true')
-          this.isFreshProfile = false
-          profileModal.dispose()
-          document.getElementsByClassName('autocomplete-input')[0].focus()
-        }
-      })
-      profileModal.show()
     }
   },
   methods: {
@@ -161,11 +147,11 @@ export default {
       </header>
     </div>
   </nav>
-  <div class="modal fade" id="profileModal" :data-bs-backdrop="isFreshProfile ? 'static' : true" :data-bs-keyboard="isFreshProfile ? 'false' : 'true'" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="profileModalLabel">{{ isFreshProfile ? 'Welcome! Let\'s set up your profile' : 'Update profile'}}</h1>
+          <h1 class="modal-title fs-5" id="profileModalLabel">Update profile</h1>
         </div>
         <div class="modal-body">
           <div class="form-floating mb-3">
@@ -206,7 +192,7 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
-          <button v-if="!isFreshProfile" type="button" class="btn btn-danger" data-bs-target="#confirmModal" data-bs-toggle="modal">Reset profile</button>
+          <button type="button" class="btn btn-danger" data-bs-target="#confirmModal" data-bs-toggle="modal">Reset profile</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Let's go!</button>
         </div>
       </div>
@@ -223,7 +209,7 @@ export default {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button v-if="!isFreshProfile" type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="clearData">Delete preferences</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="clearData">Delete preferences</button>
         </div>
       </div>
     </div>
