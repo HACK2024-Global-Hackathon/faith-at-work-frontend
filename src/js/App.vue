@@ -12,7 +12,10 @@ export default {
   data() {
     return {
       locationName: '',
+      locationLat: null,
+      locationLong: null,
       locationError: false,
+      isLoading: false,
       events: [],
       filters: {
         interests: window.localStorage.getItem('filters.interests') || 'fellowship',
@@ -82,24 +85,31 @@ export default {
     processSelectedLocation(location) {
       if (location === USE_CURRENT_LOCATION) {
         this.locationName = 'current location'
+        this.isLoading = true
         navigator.geolocation.getCurrentPosition((position) => {
-          this.searchEvents(position.coords.latitude, position.coords.longitude)
+          this.locationLat = position.coords.latitude
+          this.locationLong = position.coords.longitude
+          this.searchEvents()
         }, (error) => {
           this.locationError = true
+          this.isLoading = false
           console.error(error)
         })
       } else {
         this.locationName = this.getResultValue(location)
-        this.searchEvents(location.LATITUDE, location.LONGITUDE)
+        this.locationLat = location.LATITUDE
+        this.locationLong = location.LONGITUDE
+        this.searchEvents()
       }
     },
-    searchEvents(lat, long) {
+    searchEvents() {
       this.events = []
       this.locationError = false
       const searchEventsUrl = new URL('https://faith-at-work-backend-392395172966.asia-east1.run.app/events')
-      searchEventsUrl.searchParams.append('latitude', lat)
-      searchEventsUrl.searchParams.append('longitude', long)
-      searchEventsUrl.searchParams.append('interest_category', this.profile.interests)
+      searchEventsUrl.searchParams.append('latitude', this.locationLat)
+      searchEventsUrl.searchParams.append('longitude', this.locationLong)
+      searchEventsUrl.searchParams.append('interest_category', this.filters.interests)
+      this.isLoading = true
       axios.get(searchEventsUrl)
         .then(response => {
           this.events = [{
@@ -110,6 +120,9 @@ export default {
             "date": "2024-10-25T12:00:00Z",
             "image_url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F796565779%2F297979351972%2F1%2Foriginal.20240626-094251?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C341%2C2732%2C1366&s=ee918b23e458b906b41579a70a82c9ee"
           }].concat(response.data)
+        })
+        .finally(() => {
+          this.isLoading = false
         })
     },
     clearData() {
@@ -175,7 +188,7 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Search</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="searchEvents">Search</button>
         </div>
       </div>
     </div>
@@ -241,7 +254,12 @@ export default {
     </div>
   </div>
   <div class="container py-3 px-3 mx-auto">
-    <div v-if="locationError">
+    <div v-if="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div v-else-if="locationError">
       <h4>Could not determine your current location</h4>
       <p>Please allow location permissions, or search by address instead</p>
     </div>
