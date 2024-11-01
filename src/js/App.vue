@@ -300,7 +300,7 @@ export default {
             <div class="card-body">
               <h5 class="card-title">{{ event.title }}</h5>
               <p class="card-text">{{ event.summary }}</p>
-              <a :href="event.eventbrite_url" class="btn btn-primary">Sign up</a>
+              <a :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'" class="btn btn-primary">Sign up</a>
             </div>
           </div>
         </div>
