@@ -126,7 +126,10 @@ export default {
             "summary": "#HACK is the largest global Christian hackathon for anyone who is passionate about leveraging technology to address missional projects.",
             "eventbrite_url": "https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427",
             "date": "2024-10-25T12:00:00Z",
-            "image_url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F796565779%2F297979351972%2F1%2Foriginal.20240626-094251?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C341%2C2732%2C1366&s=ee918b23e458b906b41579a70a82c9ee"
+            "image_url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F796565779%2F297979351972%2F1%2Foriginal.20240626-094251?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C341%2C2732%2C1366&s=ee918b23e458b906b41579a70a82c9ee",
+            "organizer": "#HACK2024",
+            "distance_m": 0,
+            "walking_time_mins": 0
           }].concat(response.data)
         })
         .finally(() => {
@@ -299,8 +302,14 @@ export default {
             <img :src="event.image_url" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title">{{ event.title }}</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.organizer }}</h6>
               <p class="card-text">{{ event.summary }}</p>
-              <a :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'" class="btn btn-primary">Sign up</a>
+              <div class="d-flex justify-content-between align-items-stretch">
+                <p class="card-text text-body-secondary my-auto">
+                  {{ Math.round(event.distance_m / 1000 * 10) / 10 }}km away
+                </p>
+                <a :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'" class="btn btn-primary">Sign up</a>
+              </div>
             </div>
           </div>
         </div>
