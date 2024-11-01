@@ -17,8 +17,8 @@ export default {
       locationError: false,
       isLoading: false,
       events: [],
-      filters: {
-        categories: window.localStorage.getItem('filters.categories') || 'fellowship',
+      preferences: {
+        category: window.localStorage.getItem('preferences.category') || 'fellowship',
         daterange: 'anytime'
       },
       profile: {
@@ -31,8 +31,8 @@ export default {
     }
   },
   watch: {
-    'filters.categories': function() {
-      window.localStorage.setItem('filters.categories', this.filters.categories)
+    'preferences.category': function() {
+      window.localStorage.setItem('preferences.category', this.preferences.category)
     },
     'profile.lifeStage': function() {
       window.localStorage.setItem('profile.lifeStage', this.profile.lifeStage)
@@ -116,7 +116,7 @@ export default {
       const searchEventsUrl = new URL('https://faith-at-work-backend-392395172966.asia-east1.run.app/events')
       searchEventsUrl.searchParams.append('latitude', this.locationLat)
       searchEventsUrl.searchParams.append('longitude', this.locationLong)
-      searchEventsUrl.searchParams.append('interest_category', this.filters.categories)
+      searchEventsUrl.searchParams.append('interest_category', this.preferences.category)
       this.isLoading = true
       axios.get(searchEventsUrl)
         .then(response => {
@@ -159,9 +159,9 @@ export default {
                 :debounce-time="500"
               >
               </autocomplete>
-              <button type="button" class="btn border px-3" data-bs-toggle="modal" data-bs-target="#filterModal">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
-                  <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+              <button type="button" class="btn border px-3" data-bs-toggle="modal" data-bs-target="#preferencesModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z"/>
                 </svg>
               </button>
             </div>
@@ -176,15 +176,15 @@ export default {
       </header>
     </div>
   </nav>
-  <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal fade" id="preferencesModal" tabindex="-1" aria-labelledby="preferencesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="filterModalLabel">Filters</h1>
+          <h1 class="modal-title fs-5" id="preferencesModalLabel">Preferences</h1>
         </div>
         <div class="modal-body">
           <div class="form-floating mb-3">
-            <select class="form-select" id="categories" v-model="filters.categories" aria-label="Select categories">
+            <select class="form-select" id="category" v-model="preferences.category" aria-label="Select category">
               <option value="fellowship">Fellowship</option>
               <option value="biblestudy">Bible study</option>
               <option value="prayer&worship">Prayer & worship</option>
@@ -192,10 +192,10 @@ export default {
               <option value="volunteering">Volunteering</option>
               <option value="workshops">Workshops</option>
             </select>
-            <label for="categories">Categories</label>
+            <label for="category">Category</label>
           </div>
           <div class="form-floating">
-            <select class="form-select" id="daterange" v-model="filters.daterange" aria-label="Select when">
+            <select class="form-select" id="daterange" v-model="preferences.daterange" aria-label="Select when">
               <option value="anytime">Anytime</option>
               <option value="today">Today</option>
               <option value="tomorrow">Tomorrow</option>
@@ -217,7 +217,7 @@ export default {
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="profileModalLabel">Update profile</h1>
+          <h1 class="modal-title fs-5" id="profileModalLabel">Profile</h1>
         </div>
         <div class="modal-body">
           <div class="form-floating mb-3">
@@ -271,11 +271,11 @@ export default {
           <h1 class="modal-title fs-5" id="confirmModalLabel">Are you sure?</h1>
         </div>
         <div class="modal-body">
-          This will delete your preferences.
+          This will delete your preferences and profile.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-target="#profileModal" data-bs-toggle="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="clearData">Delete preferences</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="clearData">Delete data</button>
         </div>
       </div>
     </div>
