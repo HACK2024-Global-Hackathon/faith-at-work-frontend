@@ -1,9 +1,14 @@
 <script setup>
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import dayjs from 'dayjs'
+import calendar from 'dayjs/plugin/calendar'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { Modal } from 'bootstrap'
 
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
+dayjs.extend(calendar)
+dayjs.extend(localizedFormat)
 </script>
 
 <script>
@@ -128,6 +133,8 @@ export default {
             "date": "2024-10-25T12:00:00Z",
             "image_url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F796565779%2F297979351972%2F1%2Foriginal.20240626-094251?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C341%2C2732%2C1366&s=ee918b23e458b906b41579a70a82c9ee",
             "organizer": "#HACK2024",
+            "datetime_start": "2024-10-25T12:00:00Z",
+            "datetime_end": "2024-11-02T13:00:00Z",
             "distance_m": 0,
             "walking_time_mins": 0
           }].concat(response.data)
@@ -308,8 +315,9 @@ export default {
                 <p class="card-text text-body-secondary my-auto">
                   {{ Math.round(event.distance_m / 1000 * 10) / 10 }}km away
                 </p>
-                <a :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'" class="btn btn-primary">Sign up</a>
+                <p class="card-text text-body-secondary my-auto">{{ dayjs(event.datetime_start).calendar(null, { sameElse: 'DD MMM (ddd), LT' }) }}</p>
               </div>
+              <div class="text-end"><a class="stretched-link" :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'">Sign up</a></div>
             </div>
           </div>
         </div>
