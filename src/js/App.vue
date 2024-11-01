@@ -314,7 +314,7 @@ export default {
                 <p class="card-text text-body-secondary my-auto">
                   {{ Math.round(event.distance_m / 1000 * 10) / 10 }}km away
                 </p>
-                <p class="card-text text-body-secondary my-auto">{{ dayjs(event.datetime_start).calendar(null, { sameElse: 'DD MMM (ddd), LT' }) }}</p>
+                <p class="card-text text-body-secondary my-auto">{{ dayjs(event.datetime_start).calendar(null, { sameElse: 'ddd, DD MMM [at] LT' }) }}</p>
               </div>
               <div class="text-end"><a class="stretched-link" :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'">Sign up</a></div>
             </div>
