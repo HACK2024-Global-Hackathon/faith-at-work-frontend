@@ -4,6 +4,7 @@ import axiosRetry from 'axios-retry'
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { Modal } from 'bootstrap'
 import logo from '../assets/logo.png'
 
@@ -34,7 +35,8 @@ export default {
         gender: window.localStorage.getItem('profile.gender') || '',
         church: window.localStorage.getItem('profile.church') || '',
         industry: window.localStorage.getItem('profile.industry') || ''
-      }
+      },
+      dfp: ''
     }
   },
   watch: {
@@ -58,10 +60,16 @@ export default {
     }
   },
   mounted() {
-    const storedLocation = JSON.parse(window.localStorage.getItem('location') || '{"SEARCHVAL":"UOB PLAZA","BLK_NO":"80","ROAD_NAME":"RAFFLES PLACE","BUILDING":"UOB PLAZA","ADDRESS":"80 RAFFLES PLACE UOB PLAZA SINGAPORE 048624","POSTAL":"048624","X":"29919.6657234635","Y":"29759.2535518501","LATITUDE":"1.28540656780796","LONGITUDE":"103.850567541206"}')
-    if (storedLocation) {
-      this.processSelectedLocation(storedLocation)
-    }
+    FingerprintJS.load()
+      .then(fp => fp.get())
+      .then(result => {
+        this.dfp = result.visitorId
+      }).finally(() => {
+        const storedLocation = JSON.parse(window.localStorage.getItem('location') || '{"SEARCHVAL":"UOB PLAZA","BLK_NO":"80","ROAD_NAME":"RAFFLES PLACE","BUILDING":"UOB PLAZA","ADDRESS":"80 RAFFLES PLACE UOB PLAZA SINGAPORE 048624","POSTAL":"048624","X":"29919.6657234635","Y":"29759.2535518501","LATITUDE":"1.28540656780796","LONGITUDE":"103.850567541206"}')
+        if (storedLocation) {
+          this.processSelectedLocation(storedLocation)
+        }
+      })
   },
   methods: {
     searchLocations(input) {
@@ -125,7 +133,7 @@ export default {
       searchEventsUrl.searchParams.append('longitude', this.locationLong)
       searchEventsUrl.searchParams.append('interest_category', this.preferences.category)
       this.isLoading = true
-      axios.get(searchEventsUrl)
+      axios.get(searchEventsUrl, { headers: { 'X-Device-Fingerprint': this.dfp }})
         .then(response => {
           this.events = response.data
         })

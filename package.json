@@ -17,6 +17,7 @@
     "test": "npm run build && npm run lint"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.5.1",
     "@popperjs/core": "^2.11.8",
     "@trevoreyre/autocomplete-vue": "^3.0.3",
     "axios": "^1.7.7",
