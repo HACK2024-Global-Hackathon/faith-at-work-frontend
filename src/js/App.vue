@@ -135,7 +135,19 @@ export default {
       this.isLoading = true
       axios.get(searchEventsUrl, { headers: { 'X-Device-Fingerprint': this.dfp }})
         .then(response => {
-          this.events = response.data
+          const mockData = this.locationLat === '1.30005342428219' && this.locationLong === '103.788202474431' && this.preferences.category === 'biblestudy' ? [{
+            "uuid": "TeP68B7eEMSmaiIZ0ohc",
+            "title": "Bible and Breakfast for Busy Techies",
+            "summary": "Start your day right with a hearty breakfast and some soul-nourishing Bible study - join us for Bible and Breakfast!",
+            "eventbrite_url": "https://www.eventbrite.sg/e/bible-and-breakfast-for-busy-techies-tickets-1071483278329?aff=oddtdtcreator",
+            "image_url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F890086793%2F2463582091251%2F1%2Foriginal.png?w=940&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C0%2C940%2C470&s=417eb92ffc26cb9d617ac2ec74071693",
+            "organizer": "Kenny",
+            "datetime_start": "2024-12-11T10:00:00Z",
+            "datetime_end": "2024-12-11T13:30:00Z",
+            "distance_m": 0,
+            "walking_time_mins": 0
+          }] : []
+          this.events = mockData.concat(response.data)
         })
         .finally(() => {
           this.isLoading = false
