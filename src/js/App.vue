@@ -24,7 +24,7 @@ export default {
       isLoading: false,
       events: [],
       preferences: {
-        category: window.localStorage.getItem('preferences.category') || 'fellowship',
+        category: window.localStorage.getItem('preferences.category') || 'biblestudy',
         daterange: 'anytime'
       },
       profile: {
@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    const storedLocation = JSON.parse(window.localStorage.getItem('location') || 'null')
+    const storedLocation = JSON.parse(window.localStorage.getItem('location') || '{"SEARCHVAL":"UOB PLAZA","BLK_NO":"80","ROAD_NAME":"RAFFLES PLACE","BUILDING":"UOB PLAZA","ADDRESS":"80 RAFFLES PLACE UOB PLAZA SINGAPORE 048624","POSTAL":"048624","X":"29919.6657234635","Y":"29759.2535518501","LATITUDE":"1.28540656780796","LONGITUDE":"103.850567541206"}')
     if (storedLocation) {
       this.processSelectedLocation(storedLocation)
     }
@@ -304,8 +304,7 @@ export default {
       <p>Please allow location permissions, or search by address instead</p>
     </div>
     <div v-else>
-      <h5 v-if="locationName">Activities near {{ locationName }}</h5>
-      <h5 v-else>Start by entering your office location</h5>
+      <h5>Activities near {{ locationName }}</h5>
       <div class="row">
         <div class="col-md-6 col-lg-4 py-2" v-for="event in events" :key="event.uuid">
           <div class="card">
