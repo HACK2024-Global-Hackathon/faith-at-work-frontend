@@ -170,6 +170,7 @@ export default {
                 @submit="handleSubmit"
                 @focus="handleFocus"
                 :debounce-time="500"
+                :submitOnEnter="true"
               >
               </autocomplete>
               <button type="button" class="btn border px-3" data-bs-toggle="modal" data-bs-target="#preferencesModal">
