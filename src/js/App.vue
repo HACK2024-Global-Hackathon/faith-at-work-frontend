@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { Modal } from 'bootstrap'
+import logo from '../assets/logo.png'
 
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
 dayjs.extend(calendar)
@@ -154,7 +155,10 @@ export default {
   <nav class="navbar sticky-top bg-body-tertiary border-bottom">
     <div class="container py-2 px-3 mx-auto">
       <header class="d-sm-flex flex-wrap justify-content-start align-items-md-center">
-        <h1 class="h4 my-auto py-2 pe-3">Faith@Work</h1>
+        <div class="d-flex flex-nowrap">
+          <img :src="logo" class="pe-1" style="width: 3em">
+          <h1 class="h4 my-auto py-2 pe-3">Faith@Work</h1>
+        </div>
         <div class="flex-grow-1">
           <div class="d-flex">
             <div class="d-flex flex-nowrap input-group pe-3">
@@ -296,12 +300,12 @@ export default {
       </div>
     </div>
     <div v-else-if="locationError">
-      <h4>Could not determine your current location</h4>
+      <h5>Could not determine your current location</h5>
       <p>Please allow location permissions, or search by address instead</p>
     </div>
     <div v-else>
-      <h4 v-if="locationName">Activities near {{ locationName }}</h4>
-      <h4 v-else>Start by entering your office location</h4>
+      <h5 v-if="locationName">Activities near {{ locationName }}</h5>
+      <h5 v-else>Start by entering your office location</h5>
       <div class="row">
         <div class="col-md-6 col-lg-4 py-2" v-for="event in events" :key="event.uuid">
           <div class="card">
