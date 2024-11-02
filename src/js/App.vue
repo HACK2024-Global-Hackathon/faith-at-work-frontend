@@ -14,6 +14,7 @@ dayjs.extend(localizedFormat)
 
 <script>
 const USE_CURRENT_LOCATION = 'Use current location'
+const DEFAULT_URL = 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'
 export default {
   data() {
     return {
@@ -135,6 +136,10 @@ export default {
     clearData() {
       window.localStorage.clear()
       window.location.reload()
+    },
+    shareUrl(url) {
+      navigator.share({ url })
+        .catch(e => console.error(e))
     }
   }
 }
@@ -309,7 +314,10 @@ export default {
                 </p>
                 <p class="card-text text-body-secondary my-auto">{{ dayjs(event.datetime_start).calendar(null, { sameElse: 'ddd, DD MMM [at] LT' }) }}</p>
               </div>
-              <div class="text-end"><a class="stretched-link" :href="event.eventbrite_url || 'https://www.eventbrite.com/e/hack2024-singapore-tech-solutions-for-his-kingdom-tickets-934306344427'">Sign up</a></div>
+              <div class="d-flex justify-content-end mt-3">
+                <div class="pe-1"><button class="btn btn-primary" @click="shareUrl(event.eventbrite_url || DEFAULT_URL)">Share</button></div>
+                <div><a class="btn btn-primary" :href="event.eventbrite_url || DEFAULT_URL">Sign up</a></div>
+              </div>
             </div>
           </div>
         </div>
